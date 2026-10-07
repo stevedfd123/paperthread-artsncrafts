@@ -2,8 +2,27 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ThemeType, Ticket } from './types';
 import { THEMES } from './constants/themes';
-import { ARTWORKS, CRAFTWORKS, MEMORY_LANE_EVENTS, ME_AND_MYSELF_GALLERY, CRAFT_CATEGORIES_WITH_TAGLINES } from './data';
+import { ARTWORKS, CRAFTWORKS, ART_COLLECTIONS, CRAFT_COLLECTIONS, MEMORY_LANE_EVENTS, ME_AND_MYSELF_GALLERY, CRAFT_CATEGORIES_WITH_TAGLINES, STORY_INTRO, STORY_CHAPTERS, STORY_BRANDS, STORY_GRATITUDE, STORY_PLATFORMS, STORY_TODAY, STORY_CLOSING } from './data';
 import ParticleOverlay from './components/ParticleOverlay';
+
+/**
+ * Renders a string containing simple **bold** markers as React nodes.
+ * Keeps the long-form About Me copy readable in data.ts.
+ */
+const RichText: React.FC<{ text: string }> = ({ text }) => (
+  <>
+    {text.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
+      part.startsWith('**') && part.endsWith('**') ? (
+        <strong key={i} className="text-white font-semibold">
+          {part.slice(2, -2)}
+        </strong>
+      ) : (
+        <React.Fragment key={i}>{part}</React.Fragment>
+      )
+    )}
+  </>
+);
+
 import InteractiveCalendar from './components/InteractiveCalendar';
 import Chatbot from './components/Chatbot';
 import InquiryModal from './components/InquiryModal';
@@ -58,8 +77,8 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'home' | 'arts' | 'crafts' | 'story' | 'memory' | 'contact' | 'tickets'>('home');
 
   // Sub-filters for Arts/Crafts
-  const [artFilter, setArtFilter] = useState<'all' | 'line' | 'abstract' | 'fusion'>('all');
-  const [craftFilter, setCraftFilter] = useState<'all' | 'handicraft' | 'card'>('all');
+  const [artFilter, setArtFilter] = useState<string>('all');
+  const [craftFilter, setCraftFilter] = useState<string>('all');
 
   // Interactive burn-dissolve & glassy expertise views
   const [artsExpertiseState, setArtsExpertiseState] = useState<'idle' | 'burning' | 'glassy'>('idle');
@@ -277,7 +296,7 @@ export default function App() {
             }}
           >
             <div className="text-right pr-6 md:pr-12 max-w-sm hidden sm:block">
-              <span className="text-pink-500/80 font-mono tracking-widest text-xs uppercase">Est. 2018</span>
+              <span className="text-pink-500/80 font-mono tracking-widest text-xs uppercase">Est. 2019</span>
               <h1 className="text-4xl lg:text-5xl font-bold text-white mt-2 leading-none">Paper</h1>
               <p className="text-purple-300 text-sm mt-2 italic">Turn ordinary paper sheets into timeless keepsakes</p>
             </div>
@@ -628,7 +647,7 @@ export default function App() {
                   activeTab === 'story' ? 'bg-pink-600 text-white shadow-md' : 'text-purple-300 hover:text-pink-300 hover:bg-pink-500/5'
                 }`}
               >
-                Our Story
+                About Me
               </button>
               <button
                 id="nav-tab-memory"
@@ -841,9 +860,9 @@ export default function App() {
                     <p className="text-[10px] text-purple-400">Zero template cutting printers. Each design is individually sliced and shaped</p>
                   </div>
                   <div className="space-y-1.5 border-t md:border-t-0 md:border-x border-purple-500/10 pt-4 md:pt-0 md:px-8">
-                    <span className="text-3xl font-serif font-bold text-pink-500">2018</span>
+                    <span className="text-3xl font-serif font-bold text-pink-500">2019</span>
                     <h4 className="text-xs text-white font-mono uppercase tracking-widest">Founded</h4>
-                    <p className="text-[10px] text-purple-400">Starting as a passionate university hobby, now delivering order packages worldwide</p>
+                    <p className="text-[10px] text-purple-400">Started as a hobby during a Software Engineering degree, now a full-time creative studio</p>
                   </div>
                   <div className="space-y-1.5 pt-4 md:pt-0">
                     <span className="text-3xl font-serif font-bold text-pink-500">4.9★</span>
@@ -1009,7 +1028,9 @@ export default function App() {
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-6 rounded-2xl bg-black/20 border border-pink-500/5">
                   <div>
                     <h2 className="text-2xl font-serif font-bold text-white">Fine Arts Gallery</h2>
-                    <p className="text-xs text-purple-400 font-mono mt-0.5">Separate pages for line, abstract, and fusion styles</p>
+                    <p className="text-xs text-purple-400 font-mono mt-0.5">
+                      {ARTWORKS.length} original pieces across {ART_COLLECTIONS.length} collections
+                    </p>
                   </div>
 
                   <div className="flex flex-wrap gap-1 bg-purple-950/45 p-1 rounded-xl border border-pink-500/10 font-mono text-xs font-medium">
@@ -1020,35 +1041,22 @@ export default function App() {
                         artFilter === 'all' ? 'bg-pink-600 text-white' : 'text-purple-300 hover:text-white'
                       }`}
                     >
-                      All Styles
+                      All Collections
+                      <span className="ml-1.5 opacity-60">{ARTWORKS.length}</span>
                     </button>
-                    <button
-                      id="art-filter-line-btn"
-                      onClick={() => setArtFilter('line')}
-                      className={`px-3 py-1.5 rounded-lg transition-all ${
-                        artFilter === 'line' ? 'bg-pink-600 text-white' : 'text-purple-300 hover:text-white'
-                      }`}
-                    >
-                      Line Art
-                    </button>
-                    <button
-                      id="art-filter-abstract-btn"
-                      onClick={() => setArtFilter('abstract')}
-                      className={`px-3 py-1.5 rounded-lg transition-all ${
-                        artFilter === 'abstract' ? 'bg-pink-600 text-white' : 'text-purple-300 hover:text-white'
-                      }`}
-                    >
-                      Abstract Art
-                    </button>
-                    <button
-                      id="art-filter-fusion-btn"
-                      onClick={() => setArtFilter('fusion')}
-                      className={`px-3 py-1.5 rounded-lg transition-all ${
-                        artFilter === 'fusion' ? 'bg-pink-600 text-white' : 'text-purple-300 hover:text-white'
-                      }`}
-                    >
-                      Fusion Art
-                    </button>
+                    {ART_COLLECTIONS.map((col) => (
+                      <button
+                        key={col.slug}
+                        id={`art-filter-${col.slug}-btn`}
+                        onClick={() => setArtFilter(col.slug)}
+                        className={`px-3 py-1.5 rounded-lg transition-all ${
+                          artFilter === col.slug ? 'bg-pink-600 text-white' : 'text-purple-300 hover:text-white'
+                        }`}
+                      >
+                        {col.label}
+                        <span className="ml-1.5 opacity-60">{col.count}</span>
+                      </button>
+                    ))}
                   </div>
                 </div>
 
@@ -1063,13 +1071,15 @@ export default function App() {
                         <img
                           src={art.image}
                           alt={art.title}
+                          loading="lazy"
+                          decoding="async"
                           referrerPolicy="no-referrer"
                           className="w-full h-full object-cover group-hover:scale-[1.08] transition-all duration-[800ms]"
                         />
                         {/* Glass sheen flash */}
                         <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1200ms] bg-gradient-to-r from-transparent via-white/15 to-transparent pointer-events-none z-10" />
                         <span className="absolute top-3 left-3 px-2.5 py-1 rounded bg-[#10061e] border border-pink-400/20 text-[9px] font-mono uppercase tracking-widest font-bold text-pink-400 z-20">
-                          {art.category} art
+                          {art.collection}
                         </span>
                       </div>
 
@@ -1098,14 +1108,14 @@ export default function App() {
                           <div className="grid grid-cols-2 gap-2 pt-1.5">
                             <button
                               id={`btn-inquire-${art.id}`}
-                              onClick={() => setInquiryProduct({ title: art.title, category: art.category, type: 'Art' })}
+                              onClick={() => setInquiryProduct({ title: art.title, category: art.collection, type: 'Art' })}
                               className="py-2 px-3 rounded-lg bg-pink-600 hover:bg-pink-700 text-white font-bold text-[10px] uppercase tracking-wider transition cursor-pointer"
                             >
                               Custom Order
                             </button>
                             <a
                               id={`btn-wa-${art.id}`}
-                              href={`https://wa.me/94771234567?text=Hi%20Kavindi!%20🌸%20I'am%20interested%20in%20inquiring%20about%20your%20beautiful%20Art:%20%22${encodeURIComponent(art.title)}%22%20(${art.category}).%20Is%20it%20available%20for%20order?`}
+                              href={`https://wa.me/94771234567?text=Hi%20Kavindi!%20🌸%20I'am%20interested%20in%20inquiring%20about%20your%20beautiful%20Art:%20%22${encodeURIComponent(art.title)}%22%20(${art.collection}).%20Is%20it%20available%20for%20order?`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="inline-flex items-center justify-center gap-1 py-1.5 px-3 rounded-lg bg-green-600/10 hover:bg-green-600/20 text-green-400 border border-green-500/20 text-[10px] uppercase font-mono tracking-wide font-bold transition"
@@ -1305,35 +1315,35 @@ export default function App() {
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-6 rounded-2xl bg-black/20 border border-pink-500/5">
                   <div>
                     <h2 className="text-2xl font-serif font-bold text-white">Bespoke Crafts Showroom</h2>
-                    <p className="text-xs text-purple-400 font-mono mt-0.5">Meticulous handicrafts and customized greeting cards</p>
+                    <p className="text-xs text-purple-400 font-mono mt-0.5">
+                      {CRAFTWORKS.length} handmade pieces across {CRAFT_COLLECTIONS.length} collections
+                    </p>
                   </div>
 
                   <div className="flex flex-wrap gap-1 bg-purple-950/45 p-1 rounded-xl border border-pink-500/10 font-mono text-xs font-medium">
                     <button
                       id="craft-filter-all-btn"
                       onClick={() => setCraftFilter('all')}
-                      className="px-3 py-1.5 rounded-lg transition text-purple-300 hover:text-white"
-                    >
-                      All Crafts
-                    </button>
-                    <button
-                      id="craft-filter-handicrafts-btn"
-                      onClick={() => setCraftFilter('handicraft')}
-                      className={`px-3 py-1.5 rounded-lg transition-all ${
-                        craftFilter === 'handicraft' ? 'bg-pink-600 text-white' : 'text-purple-300 hover:text-white'
+                      className={`px-3 py-1.5 rounded-lg transition ${
+                        craftFilter === 'all' ? 'bg-pink-600 text-white' : 'text-purple-300 hover:text-white'
                       }`}
                     >
-                      Handicrafts
+                      All Collections
+                      <span className="ml-1.5 opacity-60">{CRAFTWORKS.length}</span>
                     </button>
-                    <button
-                      id="craft-filter-cards-btn"
-                      onClick={() => setCraftFilter('card')}
-                      className={`px-3 py-1.5 rounded-lg transition-all ${
-                        craftFilter === 'card' ? 'bg-pink-600 text-white' : 'text-purple-300 hover:text-white'
-                      }`}
-                    >
-                      Greeting Cards
-                    </button>
+                    {CRAFT_COLLECTIONS.map((col) => (
+                      <button
+                        key={col.slug}
+                        id={`craft-filter-${col.slug}-btn`}
+                        onClick={() => setCraftFilter(col.slug)}
+                        className={`px-3 py-1.5 rounded-lg transition-all ${
+                          craftFilter === col.slug ? 'bg-pink-600 text-white' : 'text-purple-300 hover:text-white'
+                        }`}
+                      >
+                        {col.label}
+                        <span className="ml-1.5 opacity-60">{col.count}</span>
+                      </button>
+                    ))}
                   </div>
                 </div>
 
@@ -1348,13 +1358,15 @@ export default function App() {
                         <img
                           src={craft.image}
                           alt={craft.title}
+                          loading="lazy"
+                          decoding="async"
                           referrerPolicy="no-referrer"
                           className="w-full h-full object-cover group-hover:scale-[1.08] transition-all duration-[800ms]"
                         />
                         {/* Glass sheen flash */}
                         <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1200ms] bg-gradient-to-r from-transparent via-white/15 to-transparent pointer-events-none z-10" />
                         <span className="absolute top-3 left-3 px-2.5 py-1 rounded bg-[#10061e] border border-pink-400/20 text-[9px] font-mono uppercase tracking-widest font-bold text-pink-400 z-20">
-                          {craft.category}
+                          {craft.collection}
                         </span>
                       </div>
 
@@ -1385,14 +1397,14 @@ export default function App() {
                           <div className="grid grid-cols-2 gap-2 pt-1.5">
                             <button
                               id={`btn-inquire-craft-${craft.id}`}
-                              onClick={() => setInquiryProduct({ title: craft.title, category: craft.category, type: 'Craft' })}
+                              onClick={() => setInquiryProduct({ title: craft.title, category: craft.collection, type: 'Craft' })}
                               className="py-2 px-3 rounded-lg bg-pink-600 hover:bg-pink-700 text-white font-bold text-[10px] uppercase tracking-wider transition cursor-pointer"
                             >
                               Inquire Now
                             </button>
                             <a
                               id={`btn-wa-craft-${craft.id}`}
-                              href={`https://wa.me/94771234567?text=Hi%20Kavindi!%20🌸%20I'am%20interested%20in%20inquiring%20about%20your%20amazing%20handmade%20Craft:%20%22${encodeURIComponent(craft.title)}%22%20(${craft.category}).%20Can%20we%20configure%20it?`}
+                              href={`https://wa.me/94771234567?text=Hi%20Kavindi!%20🌸%20I'am%20interested%20in%20inquiring%20about%20your%20amazing%20handmade%20Craft:%20%22${encodeURIComponent(craft.title)}%22%20(${craft.collection}).%20Can%20we%20configure%20it?`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="inline-flex items-center justify-center gap-1 py-1.5 px-3 rounded-lg bg-green-600/10 hover:bg-green-600/20 text-green-400 border border-green-500/20 text-[10px] uppercase font-mono tracking-wide font-bold transition"
@@ -1422,77 +1434,207 @@ export default function App() {
                 className="space-y-12 max-w-4xl mx-auto"
               >
                 
-                {/* Grand Banner header */}
+                {/* Hero: About Me */}
                 <section className="text-center space-y-3">
-                  <span className="text-xs font-mono font-bold uppercase tracking-widest text-pink-400">PASSION • HOBBY • LIFESTYLE</span>
+                  <span className="text-xs font-mono font-bold uppercase tracking-widest text-pink-400">About Me • My Story</span>
                   <h2 className="text-4xl sm:text-5xl font-serif font-bold text-white tracking-tight">
-                    Why Arts and Crafts Are...
+                    Hi, I&rsquo;m Kavindi
                   </h2>
                   <div className="w-16 h-1 bg-gradient-to-r from-pink-500 to-purple-500 mx-auto rounded-full"></div>
+                  <p className="text-xs font-mono text-purple-400 tracking-wider pt-1">
+                    The girl behind PaperThreads
+                  </p>
                 </section>
 
-                {/* Creator Card */}
+                {/* Portrait + opening */}
                 <div className={`p-6 sm:p-10 rounded-3xl ${colors.bgCard} border ${colors.border} ${colors.glowColor} flex flex-col md:flex-row gap-10 items-center`}>
-                  
-                  {/* Founder Image */}
                   <div className="w-full md:w-80 flex-shrink-0 flex flex-col items-center">
                     <div className="w-64 h-64 sm:w-72 sm:h-72 rounded-2xl overflow-hidden border border-pink-500/30 p-2 bg-purple-950/40 shadow-xl relative group cursor-pointer">
                       <img
                         src="https://i.imgur.com/OoDImIl.jpeg"
-                        alt="Kavindi Samudika, the creator behind PaperThreads"
+                        alt="Kavindi, the creator behind PaperThreads"
                         referrerPolicy="no-referrer"
                         className="w-full h-full object-cover rounded-xl group-hover:scale-[1.08] transition-all duration-[800ms]"
                         onError={(e) => {
                           e.currentTarget.src = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=600&auto=format&fit=crop";
                         }}
                       />
-                      {/* Glass sheen flash */}
                       <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-[1200ms] bg-gradient-to-r from-transparent via-white/15 to-transparent pointer-events-none z-10" />
                     </div>
-                    
-                    {/* Absolute Caption */}
                     <span className="text-[11px] font-mono uppercase font-bold text-pink-400 text-center tracking-wider mt-4 leading-relaxed">
-                      Kavindi Samudika,<br/>
+                      Kavindi,<br/>
                       <span className="text-purple-300 font-medium">the creator behind PaperThreads</span>
                     </span>
                   </div>
 
-                  {/* Narrative prose */}
                   <div className="flex-1 space-y-6">
                     <div>
-                      <span className="text-purple-400 text-xs font-mono uppercase tracking-widest">ARTIST PROFILE</span>
+                      <span className="text-purple-400 text-xs font-mono uppercase tracking-widest">Where it started</span>
                       <h3 className="text-2xl font-serif font-bold text-white leading-tight mt-1">
-                        Our Story
+                        One card. One suggestion. One small idea.
                       </h3>
                     </div>
-
                     <div className={`text-sm ${colors.textSecondary} space-y-4 leading-relaxed`}>
-                      <p>
-                        Welcome to <strong className="text-white">PaperThreads</strong>, where creativity, passion, and craftsmanship come together to create something truly special.
-                      </p>
-                      <p>
-                        Arts and crafts are more than just creative activities—they are a way of expressing emotions, preserving memories, and transforming simple ideas into meaningful creations. Handmade pieces carry a personal touch that no machine can replicate, making every item unique and filled with character.
-                      </p>
-                      <p>
-                        My name is <strong className="text-white">Kavindi Samudika</strong>, and I am the creator behind PaperThreads. My journey began in 2018 as a simple hobby while I was pursuing my degree. In my free time, I explored creative ideas, experimented with paper crafting techniques, and found endless inspiration through Pinterest. What started as a way to relax and express my creativity soon grew into a true passion.
-                      </p>
-                      <p>
-                        During the COVID-19 period, I also discovered a love for hand-drawn art, opening new opportunities to express creativity and bring imagination to life. As my skills developed, so did my dream of sharing handmade creations with others.
-                      </p>
+                      {STORY_INTRO.map((para, i) => (
+                        <p key={i}><RichText text={para} /></p>
+                      ))}
                     </div>
                   </div>
                 </div>
 
-                {/* Extended prose */}
-                <div className={`p-6 sm:p-10 rounded-2xl bg-black/20 border border-purple-500/5 leading-relaxed text-sm ${colors.textSecondary} space-y-4`}>
-                  <p>
-                    Today, PaperThreads is a reflection of that journey—a place where art, creativity, and attention to detail come together. Every handmade gift, paper craft, and artwork is created with love, patience, and dedication, transforming ordinary materials into treasured keepsakes that bring joy to others.
+                {/* Timeline of chapters */}
+                <section className="space-y-6">
+                  <div className="text-center space-y-2">
+                    <span className="text-xs font-mono font-bold uppercase tracking-widest text-pink-400">The Journey</span>
+                    <h3 className="text-2xl sm:text-3xl font-serif font-bold text-white">How It All Unfolded</h3>
+                    <div className="w-12 h-0.5 bg-gradient-to-r from-pink-500 to-purple-500 mx-auto rounded-full"></div>
+                  </div>
+
+                  <div className="relative space-y-5 md:pl-10">
+                    {/* vertical rail */}
+                    <div className="hidden md:block absolute left-[11px] top-3 bottom-3 w-px bg-gradient-to-b from-pink-500/50 via-purple-500/30 to-transparent" />
+
+                    {STORY_CHAPTERS.map((chapter, idx) => (
+                      <motion.div
+                        key={chapter.id}
+                        id={chapter.id}
+                        initial={{ opacity: 0, y: 14 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: '-60px' }}
+                        transition={{ duration: 0.4, delay: idx * 0.05, ease: 'easeOut' }}
+                        className="relative"
+                      >
+                        {/* rail dot */}
+                        <span className="hidden md:block absolute -left-10 top-7 w-[23px] h-[23px] rounded-full bg-[#10061e] border-2 border-pink-500/60 z-10">
+                          <span className="absolute inset-[4px] rounded-full bg-pink-500/70" />
+                        </span>
+
+                        <div className={`p-6 sm:p-8 rounded-2xl ${colors.bgCard} border ${colors.border} space-y-4 transition-all duration-300 hover:border-pink-500/30`}>
+                          <div className="flex flex-wrap items-center gap-3">
+                            <span className="px-2.5 py-1 rounded bg-pink-500/10 border border-pink-400/25 text-[10px] font-mono uppercase tracking-widest font-bold text-pink-400">
+                              {chapter.marker}
+                            </span>
+                            <h4 className="text-lg sm:text-xl font-serif font-bold text-white leading-tight">
+                              {chapter.title}
+                            </h4>
+                          </div>
+                          <div className={`text-sm ${colors.textSecondary} space-y-3 leading-relaxed`}>
+                            {chapter.paragraphs.map((para, i) => (
+                              <p key={i}><RichText text={para} /></p>
+                            ))}
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </section>
+
+                {/* Two creative spaces */}
+                <section className="space-y-6">
+                  <div className="text-center space-y-2">
+                    <span className="text-xs font-mono font-bold uppercase tracking-widest text-pink-400">Two Creative Spaces</span>
+                    <h3 className="text-2xl sm:text-3xl font-serif font-bold text-white">Different Forms of Creativity</h3>
+                    <div className="w-12 h-0.5 bg-gradient-to-r from-pink-500 to-purple-500 mx-auto rounded-full"></div>
+                    <p className={`text-xs ${colors.textSecondary} max-w-md mx-auto leading-relaxed pt-1`}>
+                      As my love for drawing grew, I created a second creative space. Different forms of creativity, but the same person behind them.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {STORY_BRANDS.map((brand) => (
+                      <button
+                        key={brand.id}
+                        id={`story-brand-${brand.tab}`}
+                        onClick={() => { setActiveTab(brand.tab); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                        className={`text-left p-6 sm:p-7 rounded-2xl ${colors.bgCard} border ${colors.border} space-y-2.5 group cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:border-pink-500/40`}
+                      >
+                        <span className="text-[10px] font-mono uppercase tracking-widest text-purple-400">{brand.tagline}</span>
+                        <h4 className="text-xl font-serif font-bold text-white group-hover:text-pink-300 transition-colors">
+                          {brand.name}
+                        </h4>
+                        <p className={`text-sm ${colors.textSecondary} leading-relaxed`}>{brand.description}</p>
+                        <span className="inline-block text-[11px] font-mono font-bold text-pink-400 pt-1 group-hover:translate-x-1 transition-transform">
+                          Explore →
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+
+                  <p className="text-center font-serif text-white italic text-lg">
+                    Different forms of creativity, but the same person behind them. <span className="text-pink-400">Me.</span>
                   </p>
-                  <p>
-                    At PaperThreads, we believe that creativity has the power to inspire, connect people, and make life's special moments even more memorable. Whether it's a personalized gift, a handcrafted decoration, or a unique piece of artwork, every creation tells a story and is made with heart.
+                </section>
+
+                {/* The people behind the journey */}
+                <div className={`p-6 sm:p-10 rounded-2xl bg-gradient-to-br from-purple-950/50 to-pink-950/40 border border-pink-500/15 space-y-4`}>
+                  <div className="space-y-1">
+                    <span className="text-xs font-mono font-bold uppercase tracking-widest text-pink-400">Gratitude</span>
+                    <h3 className="text-2xl font-serif font-bold text-white">The People Behind the Journey</h3>
+                  </div>
+                  <div className={`text-sm ${colors.textSecondary} space-y-3 leading-relaxed`}>
+                    {STORY_GRATITUDE.map((para, i) => (
+                      <p key={i}><RichText text={para} /></p>
+                    ))}
+                  </div>
+                  <p className="font-serif text-white italic text-lg pt-2">
+                    To all of you — thank you. ❤️
                   </p>
-                  <p className="text-center font-serif text-white italic text-lg pt-4">
-                    "PaperThreads – Turning Imagination into Handmade Treasures."
+                </div>
+
+                {/* Where PaperThreads is today */}
+                <section className="space-y-6">
+                  <div className="text-center space-y-2">
+                    <span className="text-xs font-mono font-bold uppercase tracking-widest text-pink-400">Right Now</span>
+                    <h3 className="text-2xl sm:text-3xl font-serif font-bold text-white">Where PaperThreads Is Today</h3>
+                    <div className="w-12 h-0.5 bg-gradient-to-r from-pink-500 to-purple-500 mx-auto rounded-full"></div>
+                  </div>
+
+                  <div className="flex flex-wrap justify-center gap-2">
+                    {STORY_PLATFORMS.map((platform) => (
+                      <span
+                        key={platform}
+                        className="px-3.5 py-1.5 rounded-full bg-purple-950/50 border border-pink-500/20 text-[11px] font-mono text-purple-200"
+                      >
+                        {platform}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className={`p-6 sm:p-8 rounded-2xl bg-black/20 border border-purple-500/5 text-sm ${colors.textSecondary} space-y-3 leading-relaxed`}>
+                    {STORY_TODAY.map((para, i) => (
+                      <p key={i}><RichText text={para} /></p>
+                    ))}
+                  </div>
+
+                  {/* Pull quote */}
+                  <div className="flex flex-col sm:flex-row items-stretch justify-center gap-3 text-center">
+                    {['One card.', "One friend's suggestion.", 'One small idea.'].map((line) => (
+                      <div
+                        key={line}
+                        className="flex-1 p-5 rounded-2xl bg-gradient-to-b from-pink-950/40 to-transparent border border-pink-500/15 flex items-center justify-center"
+                      >
+                        <span className="font-serif italic text-white text-base">{line}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-center text-xs font-mono text-purple-400">
+                    And a lot of love for creating.
+                  </p>
+                </section>
+
+                {/* Closing */}
+                <div className={`p-6 sm:p-10 rounded-3xl ${colors.bgCard} border ${colors.border} ${colors.glowColor} space-y-4`}>
+                  <div className="space-y-1">
+                    <span className="text-xs font-mono font-bold uppercase tracking-widest text-pink-400">Looking Ahead</span>
+                    <h3 className="text-2xl font-serif font-bold text-white">And This Is Only the Beginning</h3>
+                  </div>
+                  <div className={`text-sm ${colors.textSecondary} space-y-3 leading-relaxed`}>
+                    {STORY_CLOSING.map((para, i) => (
+                      <p key={i}><RichText text={para} /></p>
+                    ))}
+                  </div>
+                  <p className="text-center font-serif text-white italic text-lg pt-4 leading-relaxed">
+                    &ldquo;Let&rsquo;s continue this journey together — creating, experimenting, dreaming, and turning little ideas into beautiful things, one creation at a time.&rdquo; ❤️
                   </p>
                 </div>
 
@@ -2336,7 +2478,7 @@ export default function App() {
             </div>
             
             <p className="text-[10px] text-purple-400 font-mono tracking-wider">
-              ESTABLISHED IN 2018 WITH PINTEREST COILS • STYLED WITH MAGENTA AND PURPLE RAIN OVERLAYS
+              ESTABLISHED IN 2019 • FROM ONE HANDMADE BIRTHDAY CARD TO A FULL-TIME CREATIVE LIFE
             </p>
 
             <div className="flex justify-center gap-4 text-xs font-mono">
