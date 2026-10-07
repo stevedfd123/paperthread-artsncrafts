@@ -29,12 +29,24 @@ export interface ThemeColors {
   glowColor: string;
 }
 
+/** A gallery grouping, mirroring a subfolder of the Google Drive "Products" folder. */
+export interface ProductCollection {
+  slug: string;
+  label: string;
+  count: number;
+}
+
 export interface Artwork {
   id: string;
   title: string;
-  category: 'line' | 'abstract' | 'fusion';
+  /** Collection slug, e.g. 'mandalas'. Matches a ProductCollection.slug. */
+  category: string;
+  /** Human-readable collection name, e.g. 'Mandalas'. */
+  collection: string;
   description: string;
   image: string;
+  /** Google Drive file ID backing `image`. */
+  driveId?: string;
   size: string;
   priceEstimate?: string;
 }
@@ -42,9 +54,14 @@ export interface Artwork {
 export interface Craftwork {
   id: string;
   title: string;
-  category: 'handicraft' | 'card';
+  /** Collection slug, e.g. 'greeting-cards'. Matches a ProductCollection.slug. */
+  category: string;
+  /** Human-readable collection name, e.g. 'Greeting Cards'. */
+  collection: string;
   description: string;
   image: string;
+  /** Google Drive file ID backing `image`. */
+  driveId?: string;
   timeToMake: string;
   priceEstimate?: string;
 }

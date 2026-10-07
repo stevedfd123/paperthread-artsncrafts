@@ -1,190 +1,14 @@
-import { Artwork, Craftwork, MemoryLaneEvent } from './types';
+import { MemoryLaneEvent } from './types';
 
-export const ARTWORKS: Artwork[] = [
-  {
-    id: 'art-1',
-    title: 'The Silent Silhouette',
-    category: 'line',
-    description: 'An elegant black and white minimalistic single-line hand-drawn capturing the graceful contours of human connection.',
-    image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=600&auto=format&fit=crop', // Unsplash high quality minimalist art
-    size: '12" x 16" (Hardwood Frame)',
-    priceEstimate: '$85 / LKR 25,000'
-  },
-  {
-    id: 'art-2',
-    title: 'Warm Botanical Harmony',
-    category: 'line',
-    description: 'A delicate foliage composition highlighting organic flow, Pinterest-inspired botanical curves and beautiful golden accents.',
-    image: 'https://images.unsplash.com/photo-1549490349-8643362247b5?q=80&w=600&auto=format&fit=crop',
-    size: '8" x 10" (Minimal Matte Board)',
-    priceEstimate: '$55 / LKR 16,500'
-  },
-  {
-    id: 'art-3',
-    title: 'Vibrant Magenta Solitude',
-    category: 'abstract',
-    description: 'Textured heavy acrylic strokes on canvas conveying rich feelings of peaceful retreat. Features lovely deep magenta and violet gradients.',
-    image: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=600&auto=format&fit=crop',
-    size: '20" x 24" (Premium Wrapped Canvas)',
-    priceEstimate: '$180 / LKR 54,000'
-  },
-  {
-    id: 'art-4',
-    title: 'Ethereal Orchid Echoes',
-    category: 'abstract',
-    description: 'A dreamy, colorful fluid art piece blending magenta swirls with glistening gold pigment flakes.',
-    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop',
-    size: '16" x 16" (Circular Satin Frame)',
-    priceEstimate: '$140 / LKR 42,000'
-  },
-  {
-    id: 'art-5',
-    title: '3D Layered Paper Silhouette',
-    category: 'fusion',
-    description: 'A spectacular mix-media creation combining precise, multi-depth paper carving with acrylic sunset backdrops.',
-    image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=600&auto=format&fit=crop',
-    size: '12" x 12" (Glass Shadow Box)',
-    priceEstimate: '$210 / LKR 63,000'
-  },
-  {
-    id: 'art-6',
-    title: 'Quilled Thread & Watercolor Bloom',
-    category: 'fusion',
-    description: 'Extremely intricate paper quilled floral trails intertwined with a soft watercolor paper thread layout.',
-    image: 'https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=600&auto=format&fit=crop',
-    size: '10" x 10" (Deep-Set Satin White Frame)',
-    priceEstimate: '$150 / LKR 45,000'
-  },
-];
-
-export const CRAFTWORKS: Craftwork[] = [
-  {
-    id: 'craft-1',
-    title: 'Deluxe Multi-Layered Shadowbox',
-    category: 'handicraft',
-    description: 'A 3D quilling shadowbox incorporating hundreds of tiny coiled paper threads. Beautiful pink orchid and gold gradients.',
-    image: 'https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?q=80&w=600&auto=format&fit=crop',
-    timeToMake: '5-7 Days crafted with patience',
-    priceEstimate: '$120 / LKR 36,000'
-  },
-  {
-    id: 'craft-2',
-    title: 'Woven Thread Geometric Decor',
-    category: 'handicraft',
-    description: 'A meticulous thread-weaving creation with symmetrical geometric designs pulling magenta, purple, and copper threads.',
-    image: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?q=80&w=600&auto=format&fit=crop',
-    timeToMake: '4 Days',
-    priceEstimate: '$75 / LKR 22,500'
-  },
-  {
-    id: 'craft-3',
-    title: '3D Carousel Pop-Up Birthday Special',
-    category: 'card',
-    description: 'An interactive greeting card that opens up into an exquisite 3D fairy carousel. Perfect keepsake.',
-    image: 'https://images.unsplash.com/photo-1607344645866-009c320b63e0?q=80&w=600&auto=format&fit=crop',
-    timeToMake: '2-3 Days',
-    priceEstimate: '$24 / LKR 7,200'
-  },
-  {
-    id: 'craft-4',
-    title: 'Infinite Exploding Birthday Keepsake Box',
-    category: 'card',
-    description: 'A multi-tier exploding paper box with custom photographic pockets, handmade greeting cards, and rolling threads.',
-    image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=600&auto=format&fit=crop',
-    timeToMake: '4-5 Days',
-    priceEstimate: '$45 / LKR 13,500'
-  },
-  {
-    id: 'craft-img-1',
-    title: 'Flora Quilled Greeting Bloom',
-    category: 'card',
-    description: 'An exquisite greeting card with precision quilled pastel rose buds and gold leaf details.',
-    image: 'https://i.imgur.com/t71x1u0.jpeg',
-    timeToMake: '2 Days',
-    priceEstimate: '$18 / LKR 5,400'
-  },
-  {
-    id: 'craft-img-2',
-    title: '3D Wedding Keepsake Gate',
-    category: 'card',
-    description: 'A multi-layered popup design depicting an intricate archway, custom handcraft tailored.',
-    image: 'https://i.imgur.com/Bdq8zSq.jpeg',
-    timeToMake: '3 Days',
-    priceEstimate: '$25 / LKR 7,500'
-  },
-  {
-    id: 'craft-img-3',
-    title: 'Royal Lavender Quilling Shadowbox',
-    category: 'handicraft',
-    description: 'Delicate lavender-toned paper ribbons coiled meticulously into a framed keepsake box.',
-    image: 'https://i.imgur.com/JRLSheK.jpeg',
-    timeToMake: '5 Days',
-    priceEstimate: '$85 / LKR 25,500'
-  },
-  {
-    id: 'craft-img-4',
-    title: 'Stitched Ribbon Birthday Special',
-    category: 'card',
-    description: 'A delightful birthday card blending hand-stitched threads and geometric paper cuts.',
-    image: 'https://i.imgur.com/sHfdFZw.jpeg',
-    timeToMake: '2 Days',
-    priceEstimate: '$16 / LKR 4,800'
-  },
-  {
-    id: 'craft-img-5',
-    title: 'Ethereal Butterfly Popup',
-    category: 'card',
-    description: 'Stunning three-dimensional butterflies that spread their wings majestically when flat folds open.',
-    image: 'https://i.imgur.com/LH5FwuK.jpeg',
-    timeToMake: '3 Days',
-    priceEstimate: '$22 / LKR 6,600'
-  },
-  {
-    id: 'craft-img-6',
-    title: 'Geometric Paper-Thread Symphony',
-    category: 'handicraft',
-    description: 'Woven copper threads forming a symmetrical galaxy of patterns across an obsidian frame.',
-    image: 'https://i.imgur.com/WozEPnt.jpeg',
-    timeToMake: '4 Days',
-    priceEstimate: '$70 / LKR 21,000'
-  },
-  {
-    id: 'craft-img-7',
-    title: 'Baby Cradles Anniversary Delight',
-    category: 'card',
-    description: 'Intricately carved baby showers card emphasizing cozy paper-craft pastel shapes.',
-    image: 'https://i.imgur.com/MQADWz9.jpeg',
-    timeToMake: '2 Days',
-    priceEstimate: '$15 / LKR 4,500'
-  },
-  {
-    id: 'craft-img-8',
-    title: 'Golden Festive Ornaments Card',
-    category: 'card',
-    description: 'A custom card highlighting glowing golden orbits and deep magenta background papers.',
-    image: 'https://i.imgur.com/RCzwtT2.jpeg',
-    timeToMake: '2.5 Days',
-    priceEstimate: '$20 / LKR 6,000'
-  },
-  {
-    id: 'craft-img-9',
-    title: 'Corporate Luxury Pop-Up Suite',
-    category: 'card',
-    description: 'Bulk craft designed for branding and gift-giving, carrying elegant dark violet accents.',
-    image: 'https://i.imgur.com/nRsJr6o.jpeg',
-    timeToMake: '3 Days',
-    priceEstimate: '$28 / LKR 8,400'
-  },
-  {
-    id: 'craft-img-10',
-    title: 'Romantic Garden Arch Silhouette',
-    category: 'handicraft',
-    description: 'A deep hollow box featuring continuous paper cuts of birds, branches, and lanterns with custom light layers.',
-    image: 'https://i.imgur.com/mQWW3NK.jpeg',
-    timeToMake: '6 Days',
-    priceEstimate: '$95 / LKR 28,500'
-  }
-];
+// Product galleries are generated from the PaperThreads Google Drive "Products"
+// folder by scripts/gen-products.mjs. Re-exported here so existing imports
+// from './data' keep working.
+export {
+  ARTWORKS,
+  CRAFTWORKS,
+  ART_COLLECTIONS,
+  CRAFT_COLLECTIONS,
+} from './products.generated';
 
 export const ME_AND_MYSELF_GALLERY = [
   {
@@ -300,4 +124,120 @@ export const MEMORY_LANE_EVENTS: MemoryLaneEvent[] = [
     image: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=600&auto=format&fit=crop',
     tag: 'Workshop Event'
   }
+];
+
+// ---------------------------------------------------------------------------
+// ABOUT ME / MY STORY — Kavindi's own words.
+// Inline **bold** is rendered by the RichText helper in App.tsx.
+// ---------------------------------------------------------------------------
+
+export interface StoryChapter {
+  id: string;
+  marker: string;
+  title: string;
+  paragraphs: string[];
+}
+
+export const STORY_INTRO: string[] = [
+  "Hi, I'm Kavindi — the girl behind **PaperThreads**. ❤️",
+  'PaperThreads started with something very simple: **my love for creating things with my hands, especially with paper.**',
+  "I've always loved making handmade cards and little gifts for the people around me. There was something incredibly special about creating something with my own hands and seeing someone smile because of it. That feeling became the beginning of a journey I never expected to take.",
+  'One day, after seeing a card I had made, my friend **Malee** suggested that I start an Instagram page and share my creations. At the time, I had no idea where that one small suggestion would lead me.',
+  "**That's how PaperThreads began.**",
+];
+
+export const STORY_CHAPTERS: StoryChapter[] = [
+  {
+    id: 'chapter-beginning',
+    marker: '2019',
+    title: 'From a Small Idea to Something More',
+    paragraphs: [
+      "I started PaperThreads in **2019**, but back then, it wasn't my main focus.",
+      'I was studying for my **Software Engineering degree**, and most of my days were filled with assignments, projects, exams, and university life.',
+      'Whenever I had some free time, I would find myself scrolling through Pinterest, looking for new ideas and inspiration. I also started sharing my creations on WhatsApp Status, Facebook, and other social media platforms.',
+      'Slowly, people began noticing my work. Then came the first orders.',
+      'Before I knew it, I was balancing two very different worlds — **university life and PaperThreads.** And somehow, I loved both.',
+    ],
+  },
+  {
+    id: 'chapter-covid',
+    marker: '2020',
+    title: 'Then Came COVID',
+    paragraphs: [
+      'Like so many people around the world, COVID changed my life in ways I never expected. But in the middle of all that uncertainty, it also gave me something I hadn\u2019t had before: **Time.**',
+      'For the first time, I had the opportunity to slow down and explore something completely new. I picked up a pen and started drawing.',
+      'I had never studied art professionally. I was simply curious.',
+      'That curiosity eventually introduced me to **mandala art**, and before long, I fell completely in love with it. What began as something I tried during my free time slowly became another creative journey.',
+      "Looking back, I'm grateful for that chapter of my life because it helped me discover a part of myself I didn't even know existed.",
+    ],
+  },
+  {
+    id: 'chapter-fulltime',
+    marker: 'The Leap',
+    title: 'From Software Engineering to Creating Full-Time',
+    paragraphs: [
+      'After graduating, I stepped into the IT industry and began working full-time. But even with a career in IT, I never stopped creating. PaperThreads continued to grow alongside me.',
+      'And somewhere along the way, I realised something important. Deep down, I wanted to spend more of my time doing what I truly loved.',
+      'Eventually, I made the decision to leave my job and focus on PaperThreads full-time.',
+      "It wasn't an easy decision. But it was one of the **best decisions I've ever made.**",
+    ],
+  },
+  {
+    id: 'chapter-more',
+    marker: 'Today',
+    title: 'More Than Just a Business',
+    paragraphs: [
+      'PaperThreads has become much more than a business to me. It has helped me find confidence in myself. It has allowed me to discover my creativity.',
+      'And, most importantly, it has shown me that something can grow from the simplest of ideas when you combine **passion, patience, and a willingness to keep going.**',
+    ],
+  },
+];
+
+export const STORY_BRANDS = [
+  {
+    id: 'brand-crafts',
+    name: 'PaperThreads',
+    tagline: 'The handmade side',
+    description:
+      'Where I create handmade crafts, cards, gifts, and other paper creations.',
+    tab: 'crafts' as const,
+  },
+  {
+    id: 'brand-arts',
+    name: 'PaperThreads_Arts',
+    tagline: 'The drawing side',
+    description:
+      'A space to explore my love for hand-drawn art, mandalas, colours, shapes, lines, and everything else that inspires me.',
+    tab: 'arts' as const,
+  },
+];
+
+export const STORY_GRATITUDE: string[] = [
+  "Of course, I didn't get here alone.",
+  'From the very beginning, my friend **Malee** was one of the people who encouraged me to take that first step.',
+  'And behind every creation I make are people who quietly support me every day. The people who understand the long hours. The busy days. The moments when I doubt myself. The dreams I keep chasing.',
+  'Their love, patience, encouragement, and understanding have given me the freedom to continue doing what I truly love.',
+];
+
+export const STORY_PLATFORMS: string[] = [
+  'Instagram',
+  'Facebook',
+  'TikTok',
+  'YouTube',
+  'Art Exhibitions',
+  'Custom Creations',
+  'Art Workshops',
+];
+
+export const STORY_TODAY: string[] = [
+  'Today, my creative journey has grown far beyond that first Instagram page. I share my work through **Instagram, Facebook, TikTok, and YouTube**, take part in art exhibitions, accept custom creations, and conduct art workshops.',
+  'Every platform, every exhibition, every workshop, every order, and every new creation is another little step forward.',
+  'But whenever I think about where it all started, I still find it amazing that this entire journey began with **one handmade birthday card.**',
+];
+
+export const STORY_CLOSING: string[] = [
+  "I don't know exactly where PaperThreads will take me next. But that's one of the things I love about this journey.",
+  'There is always something new to learn. Something new to create. A new colour to explore. A new shape or line to draw. A new idea waiting to become something real.',
+  'So, to everyone who has supported my work, placed an order, liked a post, shared my creations, attended a workshop, visited an exhibition, or simply followed my journey from somewhere behind a screen — **thank you.** Your support means more to me than you\u2019ll ever know. ❤️',
+  "And if you're new here, welcome to my little creative world. I'm Kavindi, and this is **PaperThreads**.",
 ];

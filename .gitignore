@@ -1,0 +1,19 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+server.js
+*.tsbuildinfo
+
+# local env
+.env
+.env.local
+.env.*.local
+
+# vercel
+.vercel
+
+# editor / OS
+.DS_Store
+*.log
